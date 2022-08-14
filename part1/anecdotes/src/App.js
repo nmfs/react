@@ -1,5 +1,36 @@
 import { useState } from 'react'
 
+const Favorite = ({anecdotes, points}) => {
+  let top = 0
+  for(let i=1; i<anecdotes.length; i++)
+    if(points[i] > points[top])
+      top = i
+  return (
+    <>
+      <h1>Anecdote with most votes</h1>
+      <div>{anecdotes[top]}</div>
+      <div>has {points[top]} votes</div>
+    </>
+  )
+}
+
+const Daily = ({anecdotes, selected, points, setPoints, setSelected}) => {
+  function incrementPoints(index) {
+    const copy = [...points]
+    copy[index] += 1
+    return () => setPoints(copy)
+  }
+  return (
+    <>
+    <h1>Anecdote of the day</h1>
+    <div>{anecdotes[selected]}</div>
+    <div>has {points[selected]} votes</div>
+    <button onClick={incrementPoints(selected)}>vote</button>
+    <button onClick={() => setSelected(Math.floor(Math.random()*anecdotes.length))}>next anecdote</button>
+    </>
+  )
+}
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -14,19 +45,14 @@ const App = () => {
   const [selected, setSelected] = useState(0)
   const [points, setPoints] = useState(new Array(anecdotes.length).fill(0))
 
-  function incrementPoints(index) {
-    const copy = [...points]
-    copy[index] += 1
-    return () => setPoints(copy)
-  }
 
   return (
-    <div>
-      <div>{anecdotes[selected]}</div>
-      <div>has {points[selected]} votes</div>
-      <button onClick={incrementPoints(selected)}>vote</button>
-      <button onClick={() => setSelected(Math.floor(Math.random()*anecdotes.length))}>next anecdote</button>
-    </div>
+    <>
+      <Daily anecdotes={anecdotes} selected={selected}
+             points={points} setPoints={setPoints}
+             setSelected={setSelected}/>
+      <Favorite anecdotes={anecdotes} points={points}/>
+    </>
   )
 }
 
