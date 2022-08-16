@@ -3,7 +3,7 @@ import personService from '../services/phonebook'
 
 const PersonForm = ({persons, setPersons,
                       newName, setNewName,
-                      newNumber, setNewNumber}) => {
+                      newNumber, setNewNumber, setMessage}) => {
   const addPerson = (event) => {
     event.preventDefault()
     const personObject = {
@@ -17,13 +17,19 @@ const PersonForm = ({persons, setPersons,
       }
     )
     if (found) {
-      alert(newName + ' is already added to phonebook')
+      alert(`Person ${newName} is already in the server`)
       return
     }
 
     personService
       .create(personObject)
       .then(returnedPerson => {
+        setMessage(
+          `Added ${newName}`
+        )
+        setTimeout (() => {
+          setMessage(null)
+        }, 5000)
         setPersons(persons.concat(returnedPerson))
         setNewName('')
       })

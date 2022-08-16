@@ -4,11 +4,39 @@ import Filter from './components/Filter'
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 
+const Notification = ({message}) => {
+  if(message === null) {
+    return null
+  }
+
+  return(
+    <div className='msg'>
+      {message}
+    </div>
+  )
+}
+
+const Footer = () => {
+  const footerStyle = {
+    color: 'green',
+    fontStyle: 'italic',
+    fontSize: 16
+  }
+  return (
+    <div style={footerStyle}>
+      <br />
+      <em>Phonebook app, Department of Computer Science, University of Helsinki 2022</em>
+    </div>
+  )
+}
+
+
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [pattern, setPattern] = useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -24,7 +52,8 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
+      <Notification message={message} />
 
       <Filter setPattern={setPattern}/>
 
@@ -37,11 +66,14 @@ const App = () => {
         setNewName={setNewName}
         newNumber={newNumber}
         setNewNumber={setNewNumber}
+        setMessage={setMessage}
       />
 
       <h3>Numbers</h3>
 
       <Persons persons={filteredPersons} setPersons={setPersons}/>
+
+      <Footer />
     </div>
   )
 }

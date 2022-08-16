@@ -4,7 +4,7 @@ import personService from "../services/phonebook";
 
 const Person = ({person, deletePerson}) => {
   return (
-    <li>
+    <li className='note'>
       {person.name} {person.number}
       <button onClick={deletePerson}>delete</button>
     </li>
