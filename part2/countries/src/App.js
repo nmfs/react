@@ -1,13 +1,25 @@
 import { useState, useEffect} from "react";
 import axios from 'axios'
 
-const ShowCountries = ({countries}) => {
+const CountriesItem = ({country, setPattern}) => {
+  return (
+    <li key={country.name.common}>
+      {country.name.common}
+      <button onClick={() => setPattern(country.name.common)}>show</button>
+    </li>
+  )
+}
+
+const ShowCountries = ({countries, setPattern}) => {
   if(countries.length > 10)
     return (<div>Too many matches, specify another filter</div>)
   else if(countries.length > 1)
     return (
       <ul>
-        {countries.map(country => <li key={country.name.common}>{country.name.common}</li>)}
+        {countries.map(country => <CountriesItem
+          country={country}
+          setPattern={setPattern}
+        />)}
       </ul>
     )
   else if(countries.length === 0)
@@ -55,7 +67,7 @@ function App() {
       <div>
         find countries <input onChange={handleFilter} />
       </div>
-      <ShowCountries countries={filteredCountries} />
+      <ShowCountries countries={filteredCountries} setPattern={setPattern}/>
     </>
   );
 }
