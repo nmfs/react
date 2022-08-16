@@ -1,4 +1,5 @@
 import React from 'react'
+import personService from '../services/phonebook'
 
 const PersonForm = ({persons, setPersons,
                       newName, setNewName,
@@ -9,6 +10,7 @@ const PersonForm = ({persons, setPersons,
       name: newName,
       number: newNumber,
     }
+
     let found = false
     persons.forEach(person => {
         if (person.name === newName) found = true
@@ -18,8 +20,13 @@ const PersonForm = ({persons, setPersons,
       alert(newName + ' is already added to phonebook')
       return
     }
-    setPersons(persons.concat(personObject))
-    setNewName('')
+
+    personService
+      .create(personObject)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        setNewName('')
+      })
   }
 
   const handleNameChange = (event) => {
